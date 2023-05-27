@@ -1,0 +1,131 @@
+body {
+  background: linear-gradient(-90deg, white, gray, lightblue);
+  min-height: 100vh;
+  margin: 0;
+}
+
+.login {
+  padding: 15px;
+  min-height: calc(100vh - 70px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  max-height: 510px;
+  width: 300px;
+  background-color: #f0f0f0;
+  box-sizing: border-box;
+  padding: 32px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-input {
+  height: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 8px;
+  border: none;
+  outline: none;
+  
+}
+
+.login-input-border {
+  height: 1px;
+  width: 87%;
+  margin-bottom: 16px;
+  background-color: #cfcfcf;
+  transition: 0.3s, ease-in-out;
+}
+
+.login-input-border::after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 0;
+  margin-bottom: 16px;
+  background: linear-gradient(120deg, #0e0e0e, #ff1010);
+  transition: 0.3s, ease-in-out;
+}
+
+.login-input:focus+.login-input-border::after {
+  width: 100%;
+}
+
+.login-submit {
+  height: 48px;
+  width: 100%;
+  padding-left: 8px;
+  outline: none;
+  position: relative;
+  background: linear-gradient(120deg, #6e57fd, #a40c4c);
+  background-size: 200%;
+  margin-bottom: 32px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.5s, ease;
+}
+
+.login-submit:hover {
+  background-position: right;
+}
+
+.login-reset {
+  font-size: 13px;
+  color: #929292;
+  text-decoration: none;
+}
+
+.bt-login,
+.bt-cadastro {
+font-family: sans-serif;
+height: 40px;
+line-height: 40px;
+width: 100%;
+outline: none;
+position: relative;
+background: linear-gradient(120deg, #8c8c8cd4, #cfcbcb);
+background-size: 200%;
+color: #fff;
+font-size: 16px;
+font-weight: bold;
+border: unset;
+border-radius: 25px;
+cursor: pointer;
+transition: 0.5s, ease;
+text-decoration: none;
+text-align: center;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+
+.login-submit {
+margin-top: 32px;
+}
+
+.bt-cadastro {
+margin-top: 16px;
+}
+
+.feedback-message {
+  color: red;
+  margin-top: 0;
+}

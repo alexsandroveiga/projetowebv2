@@ -1,0 +1,78 @@
+/* Estilos gerais */
+.formulario-moeda {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+/* Estilos dos inputs do formulário */
+.formulario-moeda-input {
+  display: block;
+  width: 200%;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+}
+
+/* Estilos do botão de envio do formulário */
+.bt-padrao {
+  display: flex;
+  justify-content: center;
+  font-family: sans-serif;
+  height: 60px;
+  width: 60%;
+  position: relative;
+  background: linear-gradient(120deg, #8c8c8cd4, #cfcbcb);
+  background-size: 200%;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: unset;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.5s, ease;
+  text-decoration: none;
+  margin-top: 4%;
+  text-align: center;
+  align-items: center;
+  }
+  
+.bt-link {
+    display: flex;
+    justify-content: center;
+    font-family: sans-serif;
+    height: 60px;
+    width: 60%;
+    position: relative;
+    background: linear-gradient(120deg, #8c8c8cd4, #cfcbcb);
+    background-size: 200%;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.5s, ease;
+    text-decoration: none;
+    margin-top: 4%;
+    align-items: center;
+    justify-self: end; /* adicionado */
+  }
+
+.bt-link:hover {
+    background-color: #09761b;
+  }
+  
+.bt-padrao:hover {
+  background-color: #09761b;
+}
