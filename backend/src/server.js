@@ -8,6 +8,7 @@ const cors = require("cors");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
 // Configurar o CORS com opções específicas
 app.use(
   cors({
