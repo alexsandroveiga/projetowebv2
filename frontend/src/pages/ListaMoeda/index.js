@@ -11,7 +11,7 @@ function ListaMoeda() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/listarMoeda", {
+        const response = await axios.get("/moedas", {
           withCredentials: true,
         });
         console.log(response);
@@ -27,7 +27,7 @@ function ListaMoeda() {
   const buscarMoedas = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.get(`/listarMoeda?nome=${busca}`);
+      const response = await axios.get(`/moedas?nome=${busca}`);
       setMoedas(response.data);
     } catch (error) {
       console.error(error);
@@ -40,7 +40,7 @@ function ListaMoeda() {
 
   const handleExcluirMoeda = async (id) => {
     try {
-      await axios.delete(`/excluirMoeda/${id}`);
+      await axios.delete(`/moedas/${id}`);
       const updatedMoedas = moedas.filter((moeda) => moeda._id !== id);
       setMoedas(updatedMoedas);
     } catch (error) {
@@ -57,7 +57,7 @@ function ListaMoeda() {
 
   const handleSalvarEdicao = async (moedaId) => {
     try {
-      await axios.put(`/editarMoeda/${moedaId}`, moedasEditadas[moedaId]);
+      await axios.put(`/moedas/${moedaId}`, moedasEditadas[moedaId]);
       setMoedasEditadas((prevMoedasEditadas) => {
         const updatedMoedasEditadas = { ...prevMoedasEditadas };
         delete updatedMoedasEditadas[moedaId];
@@ -149,8 +149,8 @@ function ListaMoeda() {
                           Salvar
                         </button>
                         <button
-                          onClick={() => handleEditarMoeda(moeda)}
                           className="bt-cancelar"
+                          onClick={() => (window.location.href = "/listaMoeda")}
                         >
                           Cancelar
                         </button>

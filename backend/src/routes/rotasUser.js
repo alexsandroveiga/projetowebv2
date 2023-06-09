@@ -4,25 +4,28 @@ const Usuario = require("../models/User");
 const Moeda = require("../models/Moeda");
 const jwt = require("jsonwebtoken");
 const gerarToken = require("../services/gerarToken");
-const verificarToken = require("../../middleware/authMiddleware");
+// const verificarToken = require("../../middleware/authMiddleware");
 
-router.get("/gerar-token", (req, res) => {
+// Rota para gerar um token
+router.get("/token", (req, res) => {
   const token = gerarToken();
   res.json({ token });
 });
 
+// Rota para autenticação
 router.post("/authenticate", async (req, res) => {
   const { email, senha } = req.body;
   const data = await Usuario.findOne({ email: email, senha: senha });
   if (data) {
     const token = jwt.sign({ id: data._id }, "secret", { expiresIn: "1h" });
-    res.status(200).json({ token }); // Retornando o token no corpo da resposta
+    res.status(200).json({ token });
   } else {
     res.status(401).json({ mensagem: "E-mail ou senha incorretos" });
   }
 });
 
-router.post("/cadastro", async (req, res) => {
+// Rota para cadastrar um usuário
+router.post("/users", async (req, res) => {
   const { email, senha } = req.body;
 
   const user = new Usuario({ email, senha });
@@ -36,11 +39,12 @@ router.post("/cadastro", async (req, res) => {
   }
 });
 
-router.post("/cadastroMoeda", async (req, res) => {
+// Rota para cadastrar uma moeda
+router.post("/moedas", async (req, res) => {
   const { nome, alta, baixa } = req.body;
+  console.log("Rota de cadastro de moeda acionada");
 
   const moeda = new Moeda({ nome, alta, baixa });
-
   try {
     await moeda.save();
     res.status(200).json({ mensagem: "Moeda cadastrada com sucesso" });
@@ -50,7 +54,8 @@ router.post("/cadastroMoeda", async (req, res) => {
   }
 });
 
-router.get("/listarMoeda", async (req, res) => {
+// Rota para listar todas as moedas
+router.get("/moedas", async (req, res) => {
   try {
     const moedas = await Moeda.find();
     res.json(moedas);
@@ -60,7 +65,8 @@ router.get("/listarMoeda", async (req, res) => {
   }
 });
 
-router.get("/listarMoeda/:nome", verificarToken, async (req, res) => {
+// Rota para buscar uma moeda por nome
+router.get("/moedas/:nome", async (req, res) => {
   try {
     const nome = req.params.nome;
     const moedas = await Moeda.find({ nome: nome }).exec();
@@ -70,8 +76,8 @@ router.get("/listarMoeda/:nome", verificarToken, async (req, res) => {
   }
 });
 
-// Rota PUT para editar uma moeda existente por ID
-router.put("/editarMoeda/:id", async (req, res) => {
+// Rota para atualizar uma moeda
+router.put("/moedas/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const { nome, alta, baixa } = req.body;
@@ -89,8 +95,8 @@ router.put("/editarMoeda/:id", async (req, res) => {
   }
 });
 
-// Rota DELETE para excluir uma moeda por ID
-router.delete("/excluirMoeda/:id", async (req, res) => {
+// Rota para excluir uma moeda
+router.delete("/moedas/:id", async (req, res) => {
   try {
     const id = req.params.id;
 

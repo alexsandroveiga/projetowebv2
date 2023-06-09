@@ -19,7 +19,7 @@ function FormularioMoeda() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("/cadastroMoeda", {
+      const response = await axios.post("/moedas", {
         nome,
         alta,
         baixa,
