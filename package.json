@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@redis/client": "^1.5.8",
-    "redis": "^4.6.7"
-  }
-}
