@@ -19,6 +19,6 @@ services:
     image: mvertes/alpine-mongo
 
   redis:
-    image: redis:3
+    image: redis
     ports:
       - "6379:6379"

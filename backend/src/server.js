@@ -5,7 +5,6 @@ const usuarioRouter = require("./routes/rotasUser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const redis = require("redis");
-const client = redis.createClient();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -18,21 +17,25 @@ app.use(
   })
 );
 
-app.use(usuarioRouter);
-app.use(express.json());
+let redisClient;
 
-client.on("connect", () => {
-  console.log("Conectado ao Redis");
-});
+(async () => {
+  redisClient = redis.createClient();
 
-client.on("error", (err) => {
-  console.error("Erro de conexão com o Redis:", err);
-});
+  redisClient.on("connect", () => console.log(`Redis Connected`));
+
+  await redisClient.connect();
+
+  redisClient.on("error", (error) => console.error(`Error : ${error}`));
+})();
 
 app.use((req, res, next) => {
-  req.redisClient = client; // Adiciona o cliente Redis ao objeto `req`
+  req.redisClient = redisClient; // Adiciona o cliente Redis ao objeto `req`
   next();
 });
+
+app.use(usuarioRouter);
+app.use(express.json());
 
 conectDatabase();
 
