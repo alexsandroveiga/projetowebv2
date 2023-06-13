@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
+    "amqplib": "^0.10.3",
     "axios": "^1.4.0",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.0",

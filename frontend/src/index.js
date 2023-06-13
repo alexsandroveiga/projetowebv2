@@ -7,6 +7,7 @@ import Moeda from "./pages/Moeda";
 import ListaMoeda from "./pages/ListaMoeda";
 import { getToken } from "./services/auth";
 import HomePage from "./pages/HomePage";
+import EmailPage from "./pages/EmailPage";
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = !!getToken();
@@ -41,6 +42,7 @@ root.render(
       />
       <Route path="/cadastroMoeda" element={<Moeda />} />
       {<Route path="/listaMoeda" element={<ListaMoeda />} />}
+      {<Route path="/emailPage" element={<EmailPage />} />}
     </Routes>
   </BrowserRouter>
 );

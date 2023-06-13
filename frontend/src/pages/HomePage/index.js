@@ -16,6 +16,10 @@ function HomePage() {
     window.location.href = "/listaMoeda";
   };
 
+  const redirectEmail = () => {
+    window.location.href = "/emailPage";
+  };
+
   return (
     <div className="container">
       <div className="menu">
@@ -24,6 +28,9 @@ function HomePage() {
         </button>
         <button className="btn-padrao" onClick={redirectLista}>
           Listar Moedas
+        </button>
+        <button className="btn-padrao" onClick={redirectEmail}>
+          Enviar E-mail com rabbitmq
         </button>
         <div className="logout-btn">
           <input

@@ -4,6 +4,7 @@ const Usuario = require("../models/User");
 const Moeda = require("../models/Moeda");
 const jwt = require("jsonwebtoken");
 const gerarToken = require("../services/gerarToken");
+const rabbitmq = require("../rabbitmq");
 
 // Rota para listar todas as moedas com Redis cache
 router.get("/moedas", async (req, res) => {
@@ -111,6 +112,26 @@ router.delete("/moedas/:id", async (req, res) => {
     console.error(error);
     res.status(500).json({ mensagem: "Erro ao excluir a moeda" });
   }
+});
+
+// Rota para enviar e-mail utilizando RabbitMQ
+router.post("/emailPage", (req, res) => {
+  const { destinatario, assunto, conteudo } = req.body;
+  const tarefa = { destinatario, assunto, conteudo };
+
+  rabbitmq
+    .enviarTarefaParaFila(tarefa)
+    .then(() => {
+      res.status(200).json({
+        message: "Tarefa de envio de e-mail enfileirada com sucesso.",
+      });
+    })
+    .catch((error) => {
+      console.error("Erro ao enfileirar a tarefa de envio de e-mail:", error);
+      res
+        .status(500)
+        .json({ error: "Erro ao enfileirar a tarefa de envio de e-mail." });
+    });
 });
 
 module.exports = router;
