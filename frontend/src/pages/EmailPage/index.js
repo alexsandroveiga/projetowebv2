@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./styles.css";
 
 function EmailPage() {
   const [destinatario, setDestinatario] = useState("");
@@ -21,8 +22,7 @@ function EmailPage() {
   };
 
   return (
-    <div>
-      <h1>Enviar E-mail</h1>
+    <div className="containerEmail">
       <form>
         <label>
           Destinatário:
