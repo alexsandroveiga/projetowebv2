@@ -12,4 +12,4 @@ const conectDatabase = () => {
     .catch((error) => console.log("Erro ao conectar com MongoDB:", error));
 };
 
-module.exports = conectDatabase;
+module.exports = conectDatabase;
