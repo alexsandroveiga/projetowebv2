@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const conectDatabase = require("./database/db");
-const usuarioRouter = require("./routes/rotasUser");
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
+const usuarioRouter = require("./routes/rotasUser")(io);
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const redis = require("redis");
@@ -34,12 +36,28 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(usuarioRouter);
+app.use("/", usuarioRouter);
 app.use(express.json());
 
 conectDatabase();
 
+io.on("connection", (socket) => {
+  console.log("Novo cliente conectado");
+
+  // Exemplo: Enviando atualização para o cliente a cada segundo
+  setInterval(() => {
+    const mensagem = "Esta é uma atualização para o usuário!";
+    socket.emit("atualizacao", mensagem);
+  }, 1000);
+
+  socket.on("disconnect", () => {
+    console.log("Cliente desconectado");
+  });
+});
+
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+module.exports = { io };

@@ -16,7 +16,7 @@ function Cadastro() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("/cadastro", {
+      const response = await axios.post("/users", {
         email,
         senha,
       });
