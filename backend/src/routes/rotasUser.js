@@ -55,11 +55,7 @@ module.exports = (io) => {
       if (user) {
         const match = await bcrypt.compare(senha, user.senha);
         if (match) {
-<<<<<<< HEAD
           const token = jwt.sign({ id: user._id }, "abobrinha123", {
-=======
-          const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
->>>>>>> 4756e88716ead5137e1bfc99e6a31baad03a02a4
             expiresIn: "1h",
           });
           res.status(200).json({ token });
