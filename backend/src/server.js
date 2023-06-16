@@ -44,7 +44,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/", usuarioRouter);
-app.use(express.json());
 
 conectDatabase();
 

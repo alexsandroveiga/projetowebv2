@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Usuario = require("../models/User");
+
 const url_prod =
   "mongodb+srv://wallysson:barbosa@cluster1.cs8yfic.mongodb.net/projweb?maxPoolSize=10&wtimeoutMS=2500";
 
@@ -12,4 +14,4 @@ const conectDatabase = () => {
     .catch((error) => console.log("Erro ao conectar com MongoDB:", error));
 };
 
-module.exports = conectDatabase;
+module.exports = conectDatabase;
