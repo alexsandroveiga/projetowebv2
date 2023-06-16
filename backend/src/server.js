@@ -7,6 +7,13 @@ const usuarioRouter = require("./routes/rotasUser")(io);
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const redis = require("redis");
+const https = require("https");
+const fs = require("fs");
+
+const options = {
+  key: fs.readFileSync("./chave_privada.key"),
+  cert: fs.readFileSync("./certificado.crt"),
+};
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -43,6 +50,7 @@ conectDatabase();
 
 io.on("connection", (socket) => {
   console.log("Novo cliente conectado");
+  console.log("Cliente conectado: " + socket.id);
 
   // Exemplo: Enviando atualização para o cliente a cada segundo
   setInterval(() => {
@@ -53,6 +61,10 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("Cliente desconectado");
   });
+});
+
+https.createServer(options, app).listen(443, () => {
+  console.log("Servidor HTTPS iniciado na porta 443");
 });
 
 const PORT = process.env.PORT || 3001;

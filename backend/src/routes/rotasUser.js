@@ -5,8 +5,21 @@ const Moeda = require("../models/Moeda");
 const jwt = require("jsonwebtoken");
 const gerarToken = require("../services/gerarToken");
 const rabbitmq = require("../rabbitmq");
+const bcrypt = require("bcrypt");
 
 module.exports = (io) => {
+  // io.on("connection", (socket) => {
+  //   console.log("Novo cliente conectado");
+
+  //   socket.on("atualizacao", (mensagem) => {
+  //     console.log("Cliente recebeu uma atualização:", mensagem);
+  //   });
+
+  //   socket.on("disconnect", () => {
+  //     console.log("Cliente desconectado");
+  //   });
+  // });
+
   // Rota para listar todas as moedas com Redis cache
   router.get("/moedas", async (req, res) => {
     try {
@@ -20,14 +33,14 @@ module.exports = (io) => {
         res.json(moedas);
       } else {
         const moedas = await Moeda.find();
-        redisClient.set("moedas", JSON.stringify(moedas), 60);
+        redisClient.set("moedas", JSON.stringify(moedas), "EX", 60);
         res.json(moedas);
       }
-    } catch (e) {
-      res.status(500).json("Error");
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ mensagem: "Erro ao obter as moedas" });
     }
   });
-
   // Rota para gerar um token
   router.get("/token", (req, res) => {
     const token = gerarToken();
@@ -37,22 +50,36 @@ module.exports = (io) => {
   // Rota para autenticação
   router.post("/authenticate", async (req, res) => {
     const { email, senha } = req.body;
-    const data = await Usuario.findOne({ email: email, senha: senha });
-    if (data) {
-      const token = jwt.sign({ id: data._id }, "secret", { expiresIn: "1h" });
-      res.status(200).json({ token });
-    } else {
-      res.status(401).json({ mensagem: "E-mail ou senha incorretos" });
+    try {
+      const user = await Usuario.findOne({ email: email });
+      if (user) {
+        const match = await bcrypt.compare(senha, user.senha);
+        if (match) {
+          const token = jwt.sign({ id: user._id }, "abobrinha123", {
+            expiresIn: "1h",
+          });
+          res.status(200).json({ token });
+        } else {
+          res.status(401).json({ mensagem: "E-mail ou senha incorretos" });
+        }
+      } else {
+        res.status(401).json({ mensagem: "E-mail ou senha incorretos" });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ mensagem: "Erro ao realizar a autenticação" });
     }
   });
 
-  // Rota para cadastrar um usuário
   router.post("/users", async (req, res) => {
     const { email, senha } = req.body;
 
-    const user = new Usuario({ email, senha });
-
     try {
+      // Gerar o hash da senha
+      const hashedSenha = await bcrypt.hash(senha, 10);
+
+      const user = new Usuario({ email, senha: hashedSenha });
+
       await user.save();
       res.status(200).json({ mensagem: "Usuário cadastrado com sucesso" });
     } catch (err) {

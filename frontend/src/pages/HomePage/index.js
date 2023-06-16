@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { removeToken } from "../../services/auth";
 import "./styles.css";
+// import io from "socket.io-client";
 
 function HomePage() {
+  // useEffect(() => {
+  //   const socket = io("http://localhost:3001");
+
+  //   // Lidar com o evento "atualizacao" recebido do servidor
+  //   socket.on("atualizacao", (mensagem) => {
+  //     console.log("Recebeu uma atualização:", mensagem);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect(); // Desconectar quando o componente for desmontado
+  //   };
+  // }, []);
+
   const handleLogout = () => {
     removeToken(); // Remove o token
     window.location.reload(); // Recarrega a página
