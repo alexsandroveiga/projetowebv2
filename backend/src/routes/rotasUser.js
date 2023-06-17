@@ -9,6 +9,7 @@ const rateLimit = require("express-rate-limit");
 const slowDown = require("express-slow-down");
 const winston = require("winston");
 const { body } = require("express-validator");
+const authMiddleware = require("../middleware/authMiddleware");
 
 // Configuração do limite de taxa (Rate Limiting)
 const limiter = rateLimit({
@@ -30,9 +31,35 @@ const logger = winston.createLogger({
   transports: [new winston.transports.File({ filename: "security.log" })],
 });
 
+const auth = (req, res, next) => {
+  if (req.headers.authorization) {
+    try {
+      const [, token] = req.headers.authorization.split(' ')
+      const isValid = jwt.verify(token, "abobrinha123")
+      if (isValid) {
+        console.log("Senha correta")
+        console.log("a")
+        next()
+      } else {
+        res.status(403).json({
+          "error": "Token inválido"
+        })
+      }
+    } catch (error) {
+      res.status(403).json({
+        "error": "Token inválido"
+      })
+    }    
+  } else {
+    res.status(401).json({
+      "error": "Token não recebido"
+    })
+  }
+}
+
 module.exports = (io) => {
   // Rota para listar todas as moedas com Redis cache
-  router.get("/moedas", async (req, res) => {
+  router.get("/moedas", authMiddleware, async (req, res) => {
     try {
       const redisClient = req.redisClient;
 
@@ -80,7 +107,7 @@ module.exports = (io) => {
           const match = await bcrypt.compare(senha, user.senha);
           if (match) {
             const token = jwt.sign({ id: user._id }, "abobrinha123", {
-              expiresIn: "1h",
+              expiresIn: 3600
             });
             res.status(200).json({ token });
           } else {
